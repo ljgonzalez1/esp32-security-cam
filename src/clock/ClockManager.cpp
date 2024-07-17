@@ -3,14 +3,14 @@
 #include <cstring>
 #include "clock/ClockManager.h"
 
-void setup_clock(const char *timezone) {
+void ClockManager::setupClock(const char* timezone) {
   Serial.printf("Setting timezone to %s\n", timezone);
   setenv("TZ", timezone, 1);
   tzset();
-  sync_clock();
+  syncClock();
 }
 
-void sync_clock() {
+void ClockManager::syncClock() {
   Serial.println("Syncing time...");
   configTime(0, 0, "pool.ntp.org");
   struct tm timeinfo;
@@ -27,7 +27,7 @@ void sync_clock() {
                 timeinfo.tm_sec);
 }
 
-char* get_current_datetime_string() {
+const char* ClockManager::getCurrentDatetimeString() {
   static char buffer[64];
   struct tm timeinfo;
   if (!getLocalTime(&timeinfo)) {
@@ -38,7 +38,7 @@ char* get_current_datetime_string() {
   return buffer;
 }
 
-char* get_current_datetime_file() {
+const char* ClockManager::getCurrentDatetimeFile() {
   static char buffer[64];
   struct tm timeinfo;
   if (!getLocalTime(&timeinfo)) {
@@ -49,7 +49,7 @@ char* get_current_datetime_file() {
   return buffer;
 }
 
-void wait_until_next(int interval, int type) {
+void ClockManager::waitUntilNext(int interval, int type) {
   struct tm timeinfo;
   if (!getLocalTime(&timeinfo)) {
     Serial.println("Failed to obtain time");
@@ -85,75 +85,75 @@ void wait_until_next(int interval, int type) {
   }
 }
 
-void wait_until_next_second() {
-  wait_until_next(1, 0);
+void ClockManager::waitUntilNextSecond() {
+  waitUntilNext(1, 0);
 }
 
-void wait_until_next_5_seconds() {
-  wait_until_next(5, 0);
+void ClockManager::waitUntilNext5Seconds() {
+  waitUntilNext(5, 0);
 }
 
-void wait_until_next_10_seconds() {
-  wait_until_next(10, 0);
+void ClockManager::waitUntilNext10Seconds() {
+  waitUntilNext(10, 0);
 }
 
-void wait_until_next_30_seconds() {
-  wait_until_next(30, 0);
+void ClockManager::waitUntilNext30Seconds() {
+  waitUntilNext(30, 0);
 }
 
-void wait_until_next_minute() {
-  wait_until_next(1, 1);
+void ClockManager::waitUntilNextMinute() {
+  waitUntilNext(1, 1);
 }
 
-void wait_until_next_5_minutes() {
-  wait_until_next(5, 1);
+void ClockManager::waitUntilNext5Minutes() {
+  waitUntilNext(5, 1);
 }
 
-void wait_until_next_10_minutes() {
-  wait_until_next(10, 1);
+void ClockManager::waitUntilNext10Minutes() {
+  waitUntilNext(10, 1);
 }
 
-void wait_until_next_30_minutes() {
-  wait_until_next(30, 1);
+void ClockManager::waitUntilNext30Minutes() {
+  waitUntilNext(30, 1);
 }
 
-void wait_until_next_hour() {
-  wait_until_next(1, 2);
+void ClockManager::waitUntilNextHour() {
+  waitUntilNext(1, 2);
 }
 
-void wait_until_next_2_hours() {
-  wait_until_next(2, 2);
+void ClockManager::waitUntilNext2Hours() {
+  waitUntilNext(2, 2);
 }
 
-void wait_until_next_3_hours() {
-  wait_until_next(3, 2);
+void ClockManager::waitUntilNext3Hours() {
+  waitUntilNext(3, 2);
 }
 
-void wait_until_next_4_hours() {
-  wait_until_next(4, 2);
+void ClockManager::waitUntilNext4Hours() {
+  waitUntilNext(4, 2);
 }
 
-void wait_until_next_6_hours() {
-  wait_until_next(6, 2);
+void ClockManager::waitUntilNext6Hours() {
+  waitUntilNext(6, 2);
 }
 
-void wait_until_next_8_hours() {
-  wait_until_next(8, 2);
+void ClockManager::waitUntilNext8Hours() {
+  waitUntilNext(8, 2);
 }
 
-void wait_until_next_10_hours() {
-  wait_until_next(10, 2);
+void ClockManager::waitUntilNext10Hours() {
+  waitUntilNext(10, 2);
 }
 
-void wait_until_next_12_hours() {
-  wait_until_next(12, 2);
+void ClockManager::waitUntilNext12Hours() {
+  waitUntilNext(12, 2);
 }
 
-void wait_until_next_18_hours() {
-  wait_until_next(18, 2);
+void ClockManager::waitUntilNext18Hours() {
+  waitUntilNext(18, 2);
 }
 
-void wait_until_next_day() {
+void ClockManager::waitUntilNextDay() {
   struct tm timeinfo;
   if (!getLocalTime(&timeinfo)) {
     Serial.println("Failed to obtain time");
