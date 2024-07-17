@@ -1,0 +1,6 @@
+.pio
+.git
+!.gitignore
+.directory
+.idea
+/include/GlobalConstants.h
