@@ -11,7 +11,6 @@
 #include "GlobalConstants.h"
 
 WiFiClientManagerDHCP wifiManager;
-ClockManager clockManager;
 
 void loop0();
 void loop1();
@@ -45,17 +44,18 @@ void setup_cores() {
 
 bool write_datetime_to_file() {
   char filename[64];
-  const char* datetime;
+  char datetime[64];
 
   // Obtener la fecha y hora actual
-  datetime = clockManager.getCurrentDatetimeString();
-  if (strcmp(datetime, "Failed to obtain time") == 0) {
+  struct tm timeinfo;
+  if (!getLocalTime(&timeinfo)) {
     Serial.println("Failed to obtain time");
     return false;
   }
 
   // Formatear la fecha y hora en el nombre del archivo y el contenido
-  strcpy(filename, clockManager.getCurrentDatetimeFile());
+  strftime(filename, sizeof(filename), "/%Y-%m-%d_%H.%M.%S.txt", &timeinfo);
+  strftime(datetime, sizeof(datetime), "%Y-%m-%d %H:%M:%S", &timeinfo);
 
   // Abrir el archivo en la tarjeta SD para escritura
   File file = SD_MMC.open(filename, FILE_WRITE);
@@ -77,8 +77,8 @@ void setup() {
 
   connect_wifi();
 
-  clockManager.setupClock(TZ_AMERICA_SANTIAGO);
-  clockManager.syncClock();
+  ClockManager::setupClock(TZ_AMERICA_SANTIAGO);
+  ClockManager::syncClock();
 
   // ---
 
@@ -128,7 +128,7 @@ void loop0() {
 }
 
 void loop1() {
-  clockManager.waitUntilNext5Seconds(); // Esperar hasta el próximo múltiplo de 5 segundos
+  ClockManager::waitUntilNext10Seconds();
 
   if (write_datetime_to_file()) {
     Serial.println("Datetime written to file successfully.");
@@ -138,3 +138,4 @@ void loop1() {
 
   delay(1000);
 }
+
